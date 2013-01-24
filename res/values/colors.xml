@@ -1,0 +1,9 @@
+<resources>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="blue">#660000FF</color>
+    <color name="bg_blue_bar">#6A7BBF</color>
+    <color name="bg_text_headline">#C1D8D9</color>
+    <color name="light_blue">#99D9EA</color>
+
+</resources>

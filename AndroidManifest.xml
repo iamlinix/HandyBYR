@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lin.handybyr"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="16" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.lin.handybyr.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.lin.handybyr.HomepageActivity"
+            android:label="@string/title_activity_homepage"
+            android:parentActivityName="android.app.TabActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.app.TabActivity" />
+        </activity>
+        <activity
+            android:name="com.lin.handybyr.Top10Activity"
+            android:label="@string/title_activity_top10"
+            android:parentActivityName="android.support.v4.app.FragmentActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.support.v4.app.FragmentActivity" />
+        </activity>
+        <activity
+            android:name="com.lin.handybyr.ProgressingActivity"
+            android:label="@string/title_activity_progressing" >
+        </activity>
+        <activity
+            android:name="com.lin.handybyr.Reading"
+            android:label="@string/title_activity_reading" >
+        </activity>
+        <activity
+            android:name="com.lin.handybyr.ArticlelistActivity"
+            android:label="@string/title_activity_articlelist" >
+        </activity>
+        <activity
+            android:name="com.lin.handybyr.AttachmentActivity"
+            android:label="@string/title_activity_attachment" >
+        </activity>
+        <activity
+            android:name="com.lin.handybyr.PostActivity"
+            android:label="@string/title_activity_post" >
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HandyBYR</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="login">Log In</string>
+    <string name="title_section3">Section 3</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_activity_homepage">MainActivity</string>
+    <string name="guest">游客</string>
+    <string name="top10">十大</string>
+    <string name="sections">分区</string>
+    <string name="aboutMe">关于我</string>
+    <string name="config">设置</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="title_activity_home_page">HomePage</string>
+    <string name="more">更多</string>
+    <string name="recommend">推荐</string>
+    <string name="title_activity_top10">MainActivity</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="title_activity_progressing">ProgressingActivity</string>
+    <string name="title_activity_reading">Read</string>
+    <string name="progressDlgTitle">Loading...</string>
+    <string name="progressMessage">A Moment.</string>
+    <string name="title_activity_articlelist">MainActivity</string>
+    <string name="next_page">下一页</string>
+    <string name="prev_page">上一页</string>
+    <string name="title_activity_attachment">MainActivity</string>
+    <string name="back">后退</string>
+    <string name="page_format">第%d页</string>
+    <string name="title_activity_post">MainActivity</string>
+    <string name="send">发送</string>
+    <string name="new_post">发新帖</string>
+    <string name="hit_last_page">这已经是最后一页了</string>
+    <string name="remember_me">记住我</string>
+    <string name="referMe">阿特我的文章</string>
+    <string name="replyMe">回复我的文章</string>
+    <string name="mailbox">我的邮箱</string>
+    <string name="nothing">什么都没选</string>
+
+</resources>
