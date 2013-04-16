@@ -60,6 +60,8 @@ public class MetaModel {
 		public static final String MAILS			= "mail";
 		public static final String DESCRIPTION		= "description";
 		public static final String PAGINATION		= "pagination";
+		
+		public static final String SENDMAILRESULT	= "status";
 	}
 	
 	//meta model

@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.lin.Controller.ParamPair;
 import com.lin.Factory.Command;
 import com.lin.Factory.CommandDelegate;
 import com.lin.Factory.CommandName;
@@ -13,20 +14,27 @@ import com.lin.Model.MetaModel;
 import com.lin.Model.MetaModel.ArticleModel;
 import com.lin.Model.MetaModel.ArticleResponse;
 import com.lin.Model.MetaModel.FileModel;
+import com.lin.Model.MetaModel.MailResponse;
 import com.lin.Model.MetaModel.PaginationModel;
 import com.lin.Model.MetaModel.UserModel;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Picture;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.webkit.WebView;
 import android.webkit.WebView.PictureListener;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 import android.widget.Toast;
 
 @SuppressLint("ShowToast")
@@ -134,16 +142,16 @@ public class Reading extends Activity implements CommandDelegate{
 			"			font-size:12px;" +
 			"		}" +
 			"		div.box {" +
-			"	   		height: 30px;" +
+			"	   		height: 40px;" +
 			"		}" +
 			"		div.b1 {" +
-			"	  		line-height:30px; overflow:hidden; text-align:center; width: 80px; height: 30px; background-color:beige; float: left;" +
+			"	  		line-height:30px; overflow:hidden; text-align:center; width: 60px; height: 30px; background-color:beige; float: left;" +
 			"		}" +
 			"		div.b2 {" +
-			"	   		line-height:30px; overflow:hidden; text-align:center; width: 80px; height: 30px; background-color:beige; float: left; clear: none; margin-left: 5px; margin-right: 5px;" +
+			"	   		line-height:30px; overflow:hidden; text-align:center; width: 60px; height: 30px; background-color:beige; float: left; clear: none; margin-left: 5px; margin-right: 5px;" +
 			"		}" +
 			"		div.b3 {" +
-			"	   		width: 120px; height: 100px; border: 4px double #0000FF; float: left; clear: right;" +
+			"	   		line-height:30px; overflow:hidden; text-align:center; width: 60px; height: 30px; background-color:beige; float: left; clear: right;" +
 			"		}" +
 
 			"	</style>" +
@@ -161,10 +169,11 @@ public class Reading extends Activity implements CommandDelegate{
 			"%s" + "</br><p class=\"timestamp\">发布于 %s</p>" +
 	        "<div class=\"blank\">" +
 	        "<div class=box><a class=\"whitespace\" href=\"reply?%d\"><div class=b1>回复</div></a>" +
-	        "<a class=\"whitespace\" href=\"forward?%d\"><div class=b2>转发</div></a></div>" +
+	        "<a class=\"whitespace\" href=\"forward?%d\"><div class=b2>转发</div></a>" +
+	        "<a class=\"whitespace\" href=\"mailto?%d\"><div class=b3>发信</div></a></div>" +
 	        "</div></div><div class=\"whitespace\"></div>";
 	private String imagePattern = "<div><a href=\"%s\"><img src=\"%s\" class=\"imgbox\" /></a></div>"; 
-	private String pageButtom = "<a href='next_page'><div class=pagebut>More...</div></a>";
+	private String pageButtom = "<a href='next_page'><div class=pagebut>MORE...</div></a>";
 	private JSONArray articles = new JSONArray();
 	private JSONObject pagination;
 	private String board = "";
@@ -197,7 +206,20 @@ public class Reading extends Activity implements CommandDelegate{
 					// TODO Auto-generated method stub
 			        super.onPageFinished(view, url);
 			        view.scrollTo(scrollX, scrollY);
+			        progressDlg.dismissProgresDialog();
 			    }
+				
+				@Override
+				public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
+					super.onPageStarted(view, url, favicon);
+				}
+				
+				@Override
+				public void onLoadResource(WebView view, String url) {
+		            // TODO Auto-generated method stub
+		            super.onLoadResource(view, url);
+		        }
+
 			});
 
 			content = generateHtmlPage(json);
@@ -278,14 +300,14 @@ public class Reading extends Activity implements CommandDelegate{
 						user.getString(MetaModel.UserModel.USER_NAME),
 						highlightRepost(article.getString(MetaModel.ArticleModel.CONTENT)),
 						imagePane, unixtime2String(article.getLong(ArticleModel.POST_TIME)),
-						i + existingPostCount, i + existingPostCount);
+						i + existingPostCount, i + existingPostCount, i + existingPostCount);
 			}
 			currentFloor += posts.length();
 			html = currentHtml + html;
 			currentHtml = html;
 			html += pageButtom;
 			html = String.format(htmlPattern, html);
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -312,6 +334,32 @@ public class Reading extends Activity implements CommandDelegate{
 				int articleIndex = Integer.valueOf(url.substring(url.indexOf("?") + 1));
 				i.putExtra("content", articles.getJSONObject(articleIndex).toString());
 				this.startActivity(i);
+			} else if(url.startsWith(CommandName.RequestOnHtml.SENDMAIL)) {
+				int articleIndex = Integer.valueOf(url.substring(url.indexOf("?") + 1));
+				final JSONObject json = articles.getJSONObject(articleIndex);
+				final JSONObject user = json.getJSONObject(ArticleModel.USER);
+				final View view = LayoutInflater.from(this).inflate(R.layout.send_mail_view, null);
+				EditText et = (EditText)view.findViewById(R.id.edMailToTitle);
+				et.setText(json.getString(ArticleModel.TITLE));
+				et = (EditText)view.findViewById(R.id.edMailToUser);
+				et.setText(user.getString(UserModel.USER_ID));
+
+				alertDlg.showDesignedAlertWindow(this, String.format(
+						getString(R.string.mail_to), user.getString(UserModel.USER_ID)), 
+						view, getString(R.string.send), 
+						new  DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,  int  which) {
+								String title = ((EditText)view.findViewById(R.id.edMailToTitle)).
+										getText().toString();
+								String content = ((EditText)view.findViewById(R.id.edMailToContent)).
+										getText().toString();
+								String id = ((EditText)view.findViewById(R.id.edMailToUser)).
+										getText().toString();
+								Command.MailCommand.sendMail(id, title, content);	
+								dialog.dismiss();  
+							}   
+						} , getString(R.string.cancel), null);	
+
 			} else if(url.startsWith("http")) { 
 				//real urls, just go
 				Intent i = new Intent(this, com.lin.handybyr.AttachmentActivity.class);
@@ -328,17 +376,24 @@ public class Reading extends Activity implements CommandDelegate{
 	@Override
 	public void OnCommandComplete(JSONObject json) {
 		// TODO Auto-generated method stub
-		progressDlg.dismissProgresDialog();
+		
 		String rawCmd;
 		final WebView wv = (WebView)findViewById(R.id.readingPane);
 		try {
-			updatePageThreadInfo(json);
 			rawCmd = json.getString(CommandName.CommandIndicator);
 			if(rawCmd == CommandName.ArticleCommandName.THREADINFO) {
+				updatePageThreadInfo(json);
 				scrollX = wv.getScrollX();
 				scrollY = wv.getScrollY();
 				wv.loadDataWithBaseURL(null, generateHtmlPage(json), 
 						"text/html", "utf-8", null);
+			} else if(rawCmd == CommandName.MailCommandName.SENDMAIL) {
+				if(json.has(MailResponse.SENDMAILRESULT) && 
+						json.getBoolean(MailResponse.SENDMAILRESULT)) {
+					alertDlg.showRawPositiveAlertWindow(this, "邮件发送", "邮件已发送成功!", "恭喜", null);
+				} else {
+					alertDlg.showRawPositiveAlertWindow(this, "邮件发送", "邮件发送失败!", "残念", null);
+				}
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

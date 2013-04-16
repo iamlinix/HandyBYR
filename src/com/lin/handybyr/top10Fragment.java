@@ -87,6 +87,7 @@ public class top10Fragment extends Fragment implements FragmentDelegate, Command
 	@Override
 	public void OnDataArrive(JSONObject json) {
 		// TODO Auto-generated method stub
+		progressDlg.dismissProgresDialog();
 		try {
 			ListView list = (ListView)getActivity().findViewById(R.id.topten);
 			JSONArray articles = json.getJSONArray(MetaModel.ToptenResponse.ARTICLE);

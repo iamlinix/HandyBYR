@@ -78,5 +78,6 @@ public class CommandName {
 		public final static String REPLY			= "reply";
 		public final static String FORWARD			= "foreard";
 		public final static String UPDATE			= "update";
+		public final static String SENDMAIL			= "mailto";
 	}
 }

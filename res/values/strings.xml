@@ -38,7 +38,19 @@
     <string name="remember_me">记住我</string>
     <string name="referMe">阿特我的文章</string>
     <string name="replyMe">回复我的文章</string>
-    <string name="mailbox">我的邮箱</string>
+    <string name="mailbox">我的收件箱</string>
     <string name="nothing">什么都没选</string>
+    <string name="unregisteredUser">未注册用户</string>
+    <string name="u_are_not_registered">您当前使用的帐户为非注册帐户或游客帐户</string>
+    <string name="ok">确定</string>
+    <string name="mail_user">用户</string>
+    <string name="mail_title">标题</string>
+    <string name="mail_content">内容</string>
+    <string name="mail_to">发送邮件给%s</string>
+    <string name="cancel">取消</string>
+    <string name="read_reply">阅读回复</string>
+    <string name="read_refer">阅读阿特我的</string>
+    <string name="read_mail">阅读邮件</string>
+    <string name="reply">回复</string>
 
 </resources>

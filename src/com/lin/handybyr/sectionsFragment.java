@@ -203,6 +203,7 @@ public class sectionsFragment extends Fragment implements FragmentDelegate, Comm
 	@Override
 	public void OnDataArrive(JSONObject json) {
 		// TODO Auto-generated method stub
+		progressDlg.dismissProgresDialog();
 		try {
 			ListView list = (ListView)getActivity().findViewById(R.id.sections);
 			JSONArray sections = json.getJSONArray(MetaModel.SectionResponse.SECTIONS);

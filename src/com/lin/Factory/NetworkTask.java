@@ -104,7 +104,7 @@ public class NetworkTask extends AsyncTask<String, Void, JSONObject> {
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			} 
 			return;
 		}
 			

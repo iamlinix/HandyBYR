@@ -28,9 +28,10 @@ public class Command {
 	private static String _pass;
 
 	public static String COMMAND_ERROR = "com.lin.handybyr.commanderror";
+	public static boolean isRegisteredUser = false;
 	
 	private static final String _uriPrefix = "http://api.byr.cn";//"http://nforum.byr.edu.cn/api" ;
-	private static final String appkey = "?appkey=78e223c052793f0b&";
+	private static final String appkey = "?appkey=0ae1b3728362ea9b&";
 	private static final String format = ".json"; // use json only
 	private static final String attBaseUrl = "http://bbs.byr.cn/att/";
 	
@@ -59,6 +60,7 @@ public class Command {
 			Log.v("LIN", Thread.currentThread().getStackTrace()[3].getClassName());
 			_user = user;
 			_pass = pass;
+			isRegisteredUser = !_pass.isEmpty();
 			new NetworkTask().execute(BuildCommandUri(login),
 			 _user, _pass, GET, CommandName.UserCommandName.LOGIN
 			 , callerCls());
@@ -135,7 +137,6 @@ public class Command {
 		}
 
 		public static void threadInfo(String board, int threadId) {
-			Log.v("LIN", Thread.currentThread().getStackTrace()[3].getClassName());
 			new NetworkTask().execute(
 					BuildCommandUri(String.format(thread, board, threadId)),
 					_user, _pass, GET, CommandName.ArticleCommandName.THREADINFO
@@ -216,6 +217,10 @@ public class Command {
 		private final static String reply = "/mail/%s/reply/%d"; // 回信接口
 		private final static String delete = "/mail/%s/delete/%d"; // 删除信件
 		
+		private final static String idParam = "id";
+		private final static String titleParam = "title";
+		private final static String contentParam = "content";
+		
 		public static void inboxMailList() {
 			new NetworkTask().execute(
 					BuildCommandUri(inboxmaillist),
@@ -228,6 +233,27 @@ public class Command {
 					BuildCommandUri(outboxmaillist),
 					_user, _pass, GET, CommandName.MailCommandName.OUTBOXMAILLIST
 					, callerCls());
+		}
+		
+		public static void sendMail(String id, String title, String content) {
+			new NetworkTask().execute(
+					BuildCommandUri(send), _user, _pass, POST, 
+					CommandName.MailCommandName.SENDMAIL, callerCls(),
+					idParam, id, titleParam, title, contentParam, content);
+		}
+		
+		public static void mailInfo(String mailbox, int index) {
+			new NetworkTask().execute(
+					BuildCommandUri(String.format(mail, mailbox, index)),
+					_user, _pass, GET, CommandName.MailCommandName.MAILINFO
+					, callerCls());
+		}
+		
+		public static void replyMail(int index, String title, String content) {
+			new NetworkTask().execute(
+					BuildCommandUri(String.format(reply, "inbox", index)),
+					_user, _pass, POST, CommandName.MailCommandName.REPLYMAIL, callerCls(),
+					titleParam, title, contentParam, content);	
 		}
 	}
 
@@ -277,6 +303,34 @@ public class Command {
 			new NetworkTask().execute(
 					BuildCommandUri(String.format(list, ReferModel.ReferType.REPLY)),
 					_user, _pass, GET, CommandName.ReferCommandName.REPLYLIST
+					, callerCls());
+		}
+		
+		public static void setReferReadById(int id) {
+			new NetworkTask().execute(
+					BuildCommandUri(String.format(setRead, ReferModel.ReferType.REFER, id)),
+					_user, _pass, POST, CommandName.ReferCommandName.SETREAD
+					, callerCls());
+		}
+		
+		public static void setReplyReadById(int id) {
+			new NetworkTask().execute(
+					BuildCommandUri(String.format(setRead, ReferModel.ReferType.REPLY, id)),
+					_user, _pass, POST, CommandName.ReferCommandName.SETREAD
+					, callerCls());
+		}
+		
+		public static void setReferReadAll() {
+			new NetworkTask().execute(
+					BuildCommandUri(String.format(setRead, ReferModel.ReferType.REFER, -1)),
+					_user, _pass, POST, CommandName.ReferCommandName.SETREAD
+					, callerCls());
+		}
+		
+		public static void setReplyReadAll() {
+			new NetworkTask().execute(
+					BuildCommandUri(String.format(setRead, ReferModel.ReferType.REPLY, -1)),
+					_user, _pass, POST, CommandName.ReferCommandName.SETREAD
 					, callerCls());
 		}
 	}

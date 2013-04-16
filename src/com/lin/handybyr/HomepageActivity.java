@@ -180,7 +180,7 @@ public class HomepageActivity extends FragmentActivity implements CommandDelegat
 			} else {
 				ft.attach(mFragment);
 			}	
-			
+			progressDlg.showProgressDialog(mActivity);
 			if(tab.getTag() == TabTag.TOPTEN_TAG) {
 				Command.WidgetCommand.toptenList();
 			} else if(tab.getTag() == TabTag.SECTION_TAG) {

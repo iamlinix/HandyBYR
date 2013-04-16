@@ -14,8 +14,9 @@
     <ListView
         android:id="@+id/articlelist"
         android:layout_width="match_parent"
-        android:layout_height="318dp"
-        android:layout_weight="1.38" >
+        android:layout_height="240dp"
+        android:layout_weight="33.20" >
+
     </ListView>
 
     <LinearLayout

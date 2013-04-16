@@ -78,6 +78,7 @@ implements FragmentDelegate, CommandDelegate{
 	@Override
 	public void OnDataArrive(JSONObject json) {
 		// TODO Auto-generated method stub
+		progressDlg.dismissProgresDialog();
 		try {
 			ListView list = (ListView)getActivity().findViewById(R.id.recommends);
 			JSONArray articles = json.getJSONArray(MetaModel.RecommendResponse.ARTICLE);
